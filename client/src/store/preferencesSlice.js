@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { detectRegionLanguage } from '../i18n/translations.js';
 
 const initialState = {
   mode: localStorage.getItem('mode') || 'light',
-  language: localStorage.getItem('language') || 'en',
+  language: localStorage.getItem('language') || detectRegionLanguage(),
   favorites: JSON.parse(localStorage.getItem('favorites') || '[]')
 };
 

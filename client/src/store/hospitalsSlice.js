@@ -16,9 +16,20 @@ export const fetchHospitals = createAsyncThunk('hospitals/fetchHospitals', async
   }
 });
 
+export const fetchCountries = createAsyncThunk('hospitals/fetchCountries', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await apiClient.get('/countries');
+    return data.map((country) => country.name).filter(Boolean);
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
 const initialState = {
   items: hospitalsSeed,
+  countries: [...new Set(hospitalsSeed.map((hospital) => hospital.country))].sort(),
   loading: false,
+  countriesLoading: false,
   error: null,
   filters: {
     search: '',
@@ -74,6 +85,16 @@ const hospitalsSlice = createSlice({
       .addCase(fetchHospitals.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Unable to load live API data. Showing demo hospitals.';
+      })
+      .addCase(fetchCountries.pending, (state) => {
+        state.countriesLoading = true;
+      })
+      .addCase(fetchCountries.fulfilled, (state, action) => {
+        state.countriesLoading = false;
+        state.countries = action.payload.length ? action.payload : state.countries;
+      })
+      .addCase(fetchCountries.rejected, (state) => {
+        state.countriesLoading = false;
       });
   }
 });

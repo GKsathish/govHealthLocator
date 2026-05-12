@@ -2,6 +2,8 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import { Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getLabels } from '../i18n/translations.js';
 
 const markerIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -12,6 +14,8 @@ const markerIcon = new L.Icon({
 });
 
 export default function HospitalMap({ hospitals }) {
+  const language = useSelector((state) => state.preferences.language);
+  const labels = getLabels(language);
   const first = hospitals[0] || { latitude: 20.5937, longitude: 78.9629 };
 
   return (
@@ -27,7 +31,7 @@ export default function HospitalMap({ hospitals }) {
               <Typography variant="subtitle2">{hospital.name}</Typography>
               <Typography variant="body2">{hospital.city}, {hospital.state}</Typography>
               <Button component={Link} to={`/hospitals/${hospital.id}`} size="small">
-                View details
+                {labels.viewDetails}
               </Button>
             </Popup>
           </Marker>

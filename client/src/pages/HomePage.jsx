@@ -4,37 +4,36 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SearchFilters from '../components/SearchFilters.jsx';
-import { translations } from '../i18n/translations.js';
-
-const quickCards = [
-  { title: 'Emergency hospitals', icon: CrisisAlert, query: 'Emergency available' },
-  { title: 'Nearby public care', icon: GpsFixed, query: 'Use location to find closest options' },
-  { title: 'Government network', icon: Public, query: 'Verified public hospitals' }
-];
+import { getLabels } from '../i18n/translations.js';
 
 export default function HomePage() {
   const language = useSelector((state) => state.preferences.language);
-  const labels = translations[language] || translations.en;
+  const labels = getLabels(language);
+  const quickCards = [
+    { title: labels.emergencyHospitals, icon: CrisisAlert, query: labels.emergencyAvailable },
+    { title: labels.nearbyPublicCare, icon: GpsFixed, query: labels.nearbyPublicCareText },
+    { title: labels.governmentNetwork, icon: Public, query: labels.governmentNetworkText }
+  ];
 
   return (
     <div className="space-y-8">
       <section className="grid items-center gap-8 overflow-hidden rounded-lg bg-gradient-to-br from-cyan-50 via-white to-emerald-50 p-5 shadow-glass dark:from-slate-900 dark:via-slate-800 dark:to-teal-950 md:grid-cols-[1.05fr_0.95fr] md:p-10">
         <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
           <Typography variant="overline" color="primary" className="font-bold">
-            Professional Government Healthcare Locator
+            {labels.heroOverline}
           </Typography>
           <Typography variant="h2" className="max-w-3xl text-4xl font-extrabold md:text-6xl">
-            Find trusted public hospitals faster.
+            {labels.heroTitle}
           </Typography>
           <Typography variant="h6" className="max-w-2xl text-slate-600 dark:text-slate-300">
-            Search by village, city, state, or country and view emergency support, beds, departments, and maps in one place.
+            {labels.heroSubtitle}
           </Typography>
           <div className="flex flex-wrap gap-3">
             <Button component={Link} to="/hospitals" variant="contained" size="large" startIcon={<Search />}>
-              Search Hospitals
+              {labels.searchHospitals}
             </Button>
             <Button href="tel:108" color="error" variant="outlined" size="large" startIcon={<CrisisAlert />}>
-              Quick Dial 108
+              {labels.quickDial}
             </Button>
           </div>
         </motion.div>
@@ -75,9 +74,9 @@ export default function HomePage() {
         <div className="flex flex-wrap items-center gap-4">
           <LocalHospital color="primary" fontSize="large" />
           <div>
-            <Typography variant="h5">Built for public service access</Typography>
+            <Typography variant="h5">{labels.serviceTitle}</Typography>
             <Typography className="text-slate-600 dark:text-slate-300">
-              Clean records, fast filtering, responsive cards, map pins, and admin-ready data management.
+              {labels.serviceText}
             </Typography>
           </div>
         </div>

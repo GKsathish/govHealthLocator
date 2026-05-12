@@ -14,6 +14,7 @@ import {
 import { Outlet, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLanguage, toggleMode } from '../store/preferencesSlice.js';
+import { getLabels } from '../i18n/translations.js';
 
 const navLinkClass = ({ isActive }) =>
   `px-3 py-2 rounded-md text-sm font-semibold transition ${isActive ? 'bg-white/20 text-white' : 'text-white/85 hover:text-white hover:bg-white/10'}`;
@@ -21,6 +22,7 @@ const navLinkClass = ({ isActive }) =>
 export default function Layout() {
   const dispatch = useDispatch();
   const { mode, language } = useSelector((state) => state.preferences);
+  const labels = getLabels(language);
 
   return (
     <Box className="min-h-screen bg-medical-50 text-slate-900 transition dark:bg-[#071922] dark:text-slate-100">
@@ -28,20 +30,20 @@ export default function Layout() {
         <Toolbar className="gap-3">
           <HealthAndSafety />
           <Typography variant="h6" className="flex-1 font-extrabold">
-            GovCare Locator
+            {labels.brand}
           </Typography>
           <Box className="hidden gap-1 md:flex">
             <NavLink className={navLinkClass} to="/">
-              Home
+              {labels.home}
             </NavLink>
             <NavLink className={navLinkClass} to="/hospitals">
-              Hospitals
+              {labels.hospitals}
             </NavLink>
             <NavLink className={navLinkClass} to="/favorites">
-              Favorites
+              {labels.favorites}
             </NavLink>
             <NavLink className={navLinkClass} to="/admin">
-              Admin
+              {labels.admin}
             </NavLink>
           </Box>
           <Select
@@ -55,7 +57,7 @@ export default function Layout() {
             <MenuItem value="hi">HI</MenuItem>
             <MenuItem value="te">TE</MenuItem>
           </Select>
-          <Tooltip title={mode === 'dark' ? 'Light mode' : 'Dark mode'}>
+          <Tooltip title={mode === 'dark' ? labels.lightMode : labels.darkMode}>
             <IconButton color="inherit" onClick={() => dispatch(toggleMode())}>
               {mode === 'dark' ? <LightMode /> : <DarkMode />}
             </IconButton>
@@ -63,13 +65,13 @@ export default function Layout() {
         </Toolbar>
         <Box className="flex gap-2 overflow-x-auto px-4 pb-3 md:hidden">
           <Button color="inherit" component={NavLink} to="/hospitals" startIcon={<HealthAndSafety />}>
-            Hospitals
+            {labels.hospitals}
           </Button>
           <Button color="inherit" component={NavLink} to="/favorites" startIcon={<Favorite />}>
-            Saved
+            {labels.saved}
           </Button>
           <Button color="inherit" component={NavLink} to="/admin">
-            Admin
+            {labels.admin}
           </Button>
         </Box>
       </AppBar>

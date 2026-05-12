@@ -2,20 +2,20 @@ import { Autocomplete, Button, Grid, MenuItem, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFilters, setFilter } from '../store/hospitalsSlice.js';
 import { getSuggestions, getUniqueOptions } from '../utils/filterHospitals.js';
-import { translations } from '../i18n/translations.js';
+import { getLabels } from '../i18n/translations.js';
 
 const filterFields = [
-  { key: 'village', label: 'Village' },
-  { key: 'city', label: 'City' },
-  { key: 'state', label: 'State' },
-  { key: 'country', label: 'Country' }
+  { key: 'village', labelKey: 'village' },
+  { key: 'city', labelKey: 'city' },
+  { key: 'state', labelKey: 'state' },
+  { key: 'country', labelKey: 'country' }
 ];
 
 export default function SearchFilters({ compact = false }) {
   const dispatch = useDispatch();
-  const { items, filters } = useSelector((state) => state.hospitals);
+  const { countries, items, filters } = useSelector((state) => state.hospitals);
   const { language } = useSelector((state) => state.preferences);
-  const labels = translations[language] || translations.en;
+  const labels = getLabels(language);
 
   return (
     <div className="glass rounded-lg p-4">
@@ -34,12 +34,12 @@ export default function SearchFilters({ compact = false }) {
             <TextField
               select
               fullWidth
-              label={field.label}
+              label={labels[field.labelKey]}
               value={filters[field.key]}
               onChange={(event) => dispatch(setFilter({ key: field.key, value: event.target.value }))}
             >
-              <MenuItem value="">All {field.label}s</MenuItem>
-              {getUniqueOptions(items, field.key).map((option) => (
+              <MenuItem value="">{labels.all} {labels[field.labelKey]}</MenuItem>
+              {(field.key === 'country' ? countries : getUniqueOptions(items, field.key)).map((option) => (
                 <MenuItem value={option} key={option}>
                   {option}
                 </MenuItem>
@@ -49,7 +49,7 @@ export default function SearchFilters({ compact = false }) {
         ))}
         <Grid item xs={12} md={compact ? 12 : 2}>
           <Button fullWidth variant="outlined" onClick={() => dispatch(clearFilters())}>
-            Clear
+            {labels.clear}
           </Button>
         </Grid>
       </Grid>

@@ -4,6 +4,7 @@ import {
   Button,
   Grid,
   IconButton,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import {
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addHospital, deleteHospital, updateHospital } from '../store/hospitalsSlice.js';
+import { getLabels } from '../i18n/translations.js';
 
 const emptyForm = {
   id: '',
@@ -36,7 +38,9 @@ const emptyForm = {
 
 export default function AdminDashboard() {
   const dispatch = useDispatch();
-  const hospitals = useSelector((state) => state.hospitals.items);
+  const { countries, items: hospitals } = useSelector((state) => state.hospitals);
+  const language = useSelector((state) => state.preferences.language);
+  const labels = getLabels(language);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
   const isEditing = Boolean(form.id);
@@ -63,7 +67,7 @@ export default function AdminDashboard() {
     event.preventDefault();
     const missing = requiredFields.find((field) => !form[field].trim());
     if (missing) {
-      setError(`Please enter ${missing}.`);
+      setError(`${labels.fieldRequired} ${labels[missing] || missing}.`);
       return;
     }
 
@@ -97,44 +101,59 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <Typography variant="h3">Admin Dashboard</Typography>
-        <Typography className="text-slate-600 dark:text-slate-300">Add, edit, delete, and manage government hospital locations.</Typography>
+        <Typography variant="h3">{labels.adminTitle}</Typography>
+        <Typography className="text-slate-600 dark:text-slate-300">{labels.adminSubtitle}</Typography>
       </div>
 
       <Paper component="form" onSubmit={submitHospital} className="p-5">
         <Typography variant="h5" className="mb-4">
-          {isEditing ? 'Edit hospital' : 'Add hospital'}
+          {isEditing ? labels.editHospital : labels.addHospital}
         </Typography>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         <Grid container spacing={2}>
           {[
-            ['name', 'Hospital Name'],
-            ['contactNumber', 'Contact Number'],
-            ['address', 'Address'],
-            ['village', 'Village'],
-            ['city', 'City'],
-            ['state', 'State'],
-            ['country', 'Country'],
-            ['openingHours', 'Opening Hours'],
-            ['latitude', 'Latitude'],
-            ['longitude', 'Longitude'],
-            ['doctorsCount', 'Doctors Count'],
-            ['bedsAvailable', 'Beds Available'],
-            ['imageUrl', 'Image URL']
+            ['name', labels.hospitalName],
+            ['contactNumber', labels.contactNumber],
+            ['address', labels.address],
+            ['village', labels.village],
+            ['city', labels.city],
+            ['state', labels.state],
+            ['openingHours', labels.openingHours],
+            ['latitude', labels.latitude],
+            ['longitude', labels.longitude],
+            ['doctorsCount', labels.doctorsCount],
+            ['bedsAvailable', labels.bedsField],
+            ['imageUrl', labels.imageUrl]
           ].map(([key, label]) => (
             <Grid item xs={12} md={key === 'address' || key === 'imageUrl' ? 6 : 3} key={key}>
               <TextField fullWidth label={label} value={form[key]} onChange={(event) => updateField(key, event.target.value)} />
             </Grid>
           ))}
           <Grid item xs={12} md={3}>
+            <TextField
+              select
+              fullWidth
+              label={labels.country}
+              value={form.country}
+              onChange={(event) => updateField('country', event.target.value)}
+            >
+              <MenuItem value="">{labels.selectCountry}</MenuItem>
+              {countries.map((country) => (
+                <MenuItem value={country} key={country}>
+                  {country}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={3}>
             <Button component="label" variant="outlined" fullWidth sx={{ height: '56px' }}>
-              Upload Image
+              {labels.uploadImage}
               <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
             </Button>
           </Grid>
           <Grid item xs={12} md={3}>
             <Button type="submit" variant="contained" fullWidth sx={{ height: '56px' }} startIcon={<Save />}>
-              {isEditing ? 'Save changes' : 'Add hospital'}
+              {isEditing ? labels.saveChanges : labels.addHospital}
             </Button>
           </Grid>
         </Grid>
@@ -144,10 +163,10 @@ export default function AdminDashboard() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Contact</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>{labels.hospitalName}</TableCell>
+              <TableCell>{labels.location}</TableCell>
+              <TableCell>{labels.contact}</TableCell>
+              <TableCell align="right">{labels.actions}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

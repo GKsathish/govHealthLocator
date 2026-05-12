@@ -12,10 +12,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavorite } from '../store/preferencesSlice.js';
+import { getLabels } from '../i18n/translations.js';
 
 export default function HospitalCard({ hospital }) {
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.preferences.favorites);
+  const { favorites, language } = useSelector((state) => state.preferences);
+  const labels = getLabels(language);
   const isFavorite = favorites.includes(hospital.id);
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${hospital.latitude},${hospital.longitude}`;
 
@@ -28,7 +30,7 @@ export default function HospitalCard({ hospital }) {
             <Typography variant="h6" className="leading-tight">
               {hospital.name}
             </Typography>
-            <Tooltip title={isFavorite ? 'Remove favorite' : 'Save favorite'}>
+            <Tooltip title={isFavorite ? labels.removeFavorite : labels.saveFavorite}>
               <IconButton color="primary" onClick={() => dispatch(toggleFavorite(hospital.id))}>
                 {isFavorite ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
@@ -43,7 +45,7 @@ export default function HospitalCard({ hospital }) {
           <div className="flex flex-wrap gap-2">
             <Chip
               icon={<LocalHospital />}
-              label={hospital.emergencyAvailable ? 'Emergency available' : 'No emergency'}
+              label={hospital.emergencyAvailable ? labels.emergencyAvailable : labels.noEmergency}
               color={hospital.emergencyAvailable ? 'success' : 'default'}
               size="small"
             />
@@ -51,19 +53,19 @@ export default function HospitalCard({ hospital }) {
           </div>
           <div className="flex items-center justify-between">
             <Rating value={hospital.rating} precision={0.1} readOnly size="small" />
-            <Typography variant="body2">{hospital.bedsAvailable} beds</Typography>
+            <Typography variant="body2">{hospital.bedsAvailable} {labels.beds}</Typography>
           </div>
         </CardContent>
         <CardActions className="px-4 pb-4">
           <Button component={Link} to={`/hospitals/${hospital.id}`} variant="contained" fullWidth>
-            Details
+            {labels.details}
           </Button>
-          <Tooltip title="Call hospital">
+          <Tooltip title={labels.callHospital}>
             <IconButton color="primary" href={`tel:${hospital.contactNumber}`}>
               <Call />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Open Google Maps">
+          <Tooltip title={labels.openGoogleMaps}>
             <IconButton color="primary" href={mapsUrl} target="_blank" rel="noreferrer">
               <Directions />
             </IconButton>

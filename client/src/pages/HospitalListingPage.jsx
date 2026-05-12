@@ -8,6 +8,7 @@ import LoadingSkeletons from '../components/LoadingSkeletons.jsx';
 import SearchFilters from '../components/SearchFilters.jsx';
 import { setPage } from '../store/hospitalsSlice.js';
 import { filterHospitals } from '../utils/filterHospitals.js';
+import { getLabels } from '../i18n/translations.js';
 
 const distanceKm = (a, b) => {
   const toRad = (value) => (value * Math.PI) / 180;
@@ -24,6 +25,8 @@ const distanceKm = (a, b) => {
 export default function HospitalListingPage() {
   const dispatch = useDispatch();
   const { items, filters, loading, error, page, pageSize } = useSelector((state) => state.hospitals);
+  const language = useSelector((state) => state.preferences.language);
+  const labels = getLabels(language);
   const [nearbyOnly, setNearbyOnly] = useState(false);
   const [location, setLocation] = useState(null);
   const [locationError, setLocationError] = useState('');
@@ -60,13 +63,13 @@ export default function HospitalListingPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <Typography variant="h3">Government Hospitals</Typography>
+          <Typography variant="h3">{labels.listingTitle}</Typography>
           <Typography className="text-slate-600 dark:text-slate-300">
-            {filtered.length} matching hospitals across verified public locations.
+            {filtered.length} {labels.matchingHospitals}
           </Typography>
         </div>
         <Button variant={nearbyOnly ? 'contained' : 'outlined'} startIcon={<GpsFixed />} onClick={findNearby}>
-          Nearby hospitals
+          {labels.nearbyHospitals}
         </Button>
       </div>
       <SearchFilters />
@@ -87,7 +90,7 @@ export default function HospitalListingPage() {
         </Grid>
       )}
 
-      {!visibleHospitals.length && !loading && <Alert severity="warning">No hospitals match the selected filters.</Alert>}
+      {!visibleHospitals.length && !loading && <Alert severity="warning">{labels.noMatches}</Alert>}
 
       <Stack alignItems="center">
         <Pagination count={pageCount} page={Math.min(page, pageCount)} onChange={(_, value) => dispatch(setPage(value))} color="primary" />

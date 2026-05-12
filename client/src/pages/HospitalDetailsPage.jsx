@@ -3,17 +3,20 @@ import { Avatar, Button, Chip, Grid, Paper, Rating, Typography } from '@mui/mate
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import HospitalMap from '../components/HospitalMap.jsx';
+import { getLabels } from '../i18n/translations.js';
 
 export default function HospitalDetailsPage() {
   const { id } = useParams();
   const hospital = useSelector((state) => state.hospitals.items.find((item) => item.id === id || item._id === id));
+  const language = useSelector((state) => state.preferences.language);
+  const labels = getLabels(language);
 
   if (!hospital) {
     return (
       <Paper className="p-6">
-        <Typography variant="h4">Hospital not found</Typography>
+        <Typography variant="h4">{labels.hospitalNotFound}</Typography>
         <Button component={Link} to="/hospitals" startIcon={<ArrowBack />} sx={{ mt: 2 }}>
-          Back to hospitals
+          {labels.backToHospitals}
         </Button>
       </Paper>
     );
@@ -22,7 +25,7 @@ export default function HospitalDetailsPage() {
   return (
     <div className="space-y-6">
       <Button component={Link} to="/hospitals" startIcon={<ArrowBack />}>
-        Back to hospitals
+        {labels.backToHospitals}
       </Button>
       <section className="grid gap-6 rounded-lg bg-white p-5 shadow-sm dark:bg-slate-900 md:grid-cols-[0.9fr_1.1fr]">
         <img className="h-full min-h-[320px] w-full rounded-lg object-cover" src={hospital.imageUrl} alt={hospital.name} />
@@ -36,14 +39,14 @@ export default function HospitalDetailsPage() {
             <Typography>{hospital.rating}</Typography>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Chip icon={<LocalHospital />} color="success" label={hospital.emergencyAvailable ? 'Emergency available' : 'No emergency'} />
-            <Chip icon={<LocalShipping />} label={hospital.ambulanceAvailable ? 'Ambulance available' : 'No ambulance'} />
-            <Chip icon={<Bed />} label={`${hospital.bedsAvailable} beds available`} />
-            <Chip icon={<MedicalServices />} label={`${hospital.doctorsCount} doctors`} />
+            <Chip icon={<LocalHospital />} color="success" label={hospital.emergencyAvailable ? labels.emergencyAvailable : labels.noEmergency} />
+            <Chip icon={<LocalShipping />} label={hospital.ambulanceAvailable ? labels.ambulanceAvailable : labels.noAmbulance} />
+            <Chip icon={<Bed />} label={`${hospital.bedsAvailable} ${labels.bedsAvailable}`} />
+            <Chip icon={<MedicalServices />} label={`${hospital.doctorsCount} ${labels.doctors}`} />
           </div>
           <div className="flex flex-wrap gap-3">
             <Button href={`tel:${hospital.contactNumber}`} variant="contained" color="error" startIcon={<Call />}>
-              Call {hospital.contactNumber}
+              {labels.callHospital} {hospital.contactNumber}
             </Button>
             <Button
               href={`https://www.google.com/maps/search/?api=1&query=${hospital.latitude},${hospital.longitude}`}
@@ -51,7 +54,7 @@ export default function HospitalDetailsPage() {
               rel="noreferrer"
               variant="outlined"
             >
-              Google Maps
+              {labels.googleMaps}
             </Button>
           </div>
         </div>
@@ -60,7 +63,7 @@ export default function HospitalDetailsPage() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={5}>
           <Paper className="h-full p-5">
-            <Typography variant="h5">Departments</Typography>
+            <Typography variant="h5">{labels.departments}</Typography>
             <div className="mt-4 flex flex-wrap gap-2">
               {hospital.departments.map((department) => (
                 <Chip key={department} label={department} />
@@ -74,7 +77,7 @@ export default function HospitalDetailsPage() {
       </Grid>
 
       <Paper className="p-5">
-        <Typography variant="h5">Reviews</Typography>
+        <Typography variant="h5">{labels.reviews}</Typography>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {hospital.reviews.map((review) => (
             <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-700" key={`${review.author}-${review.text}`}>

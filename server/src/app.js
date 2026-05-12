@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import countryRoutes from './routes/countryRoutes.js';
 import hospitalRoutes from './routes/hospitalRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
@@ -28,6 +29,7 @@ export const createApp = () => {
     res.json({ status: 'ok', service: 'government-healthcare-locator' });
   });
 
+  app.use('/api/countries', countryRoutes);
   app.use('/api/hospitals', hospitalRoutes);
   app.use('/api/locations', locationRoutes);
   app.use(notFound);

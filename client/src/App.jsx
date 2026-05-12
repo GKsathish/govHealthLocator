@@ -9,7 +9,7 @@ import FavoritesPage from './pages/FavoritesPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import HospitalDetailsPage from './pages/HospitalDetailsPage.jsx';
 import HospitalListingPage from './pages/HospitalListingPage.jsx';
-import { fetchHospitals } from './store/hospitalsSlice.js';
+import { fetchCountries, fetchHospitals } from './store/hospitalsSlice.js';
 import { createAppTheme } from './theme.js';
 
 export default function App() {
@@ -23,6 +23,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetchHospitals());
+    dispatch(fetchCountries());
   }, [dispatch]);
 
   return (
