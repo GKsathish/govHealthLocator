@@ -1,0 +1,142 @@
+export const hospitalsSeed = [
+  {
+    id: 'gh-hyd-001',
+    name: 'Government General Hospital Hyderabad',
+    address: 'Afzal Gunj Road, near Osmania Medical College',
+    village: 'Afzal Gunj',
+    city: 'Hyderabad',
+    state: 'Telangana',
+    country: 'India',
+    contactNumber: '+91 40 2460 0123',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 17.3713,
+    longitude: 78.4747,
+    departments: ['Emergency', 'Cardiology', 'Orthopedics', 'Pediatrics', 'General Medicine'],
+    doctorsCount: 126,
+    bedsAvailable: 184,
+    ambulanceAvailable: true,
+    rating: 4.4,
+    reviews: [
+      { author: 'Asha R.', text: 'Fast emergency support and clear guidance from staff.', rating: 5 },
+      { author: 'Mohan K.', text: 'Crowded but dependable for critical care.', rating: 4 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=900&q=80'
+  },
+  {
+    id: 'gh-del-002',
+    name: 'Lok Nayak Government Hospital',
+    address: 'Jawaharlal Nehru Marg, Delhi Gate',
+    village: 'Delhi Gate',
+    city: 'New Delhi',
+    state: 'Delhi',
+    country: 'India',
+    contactNumber: '+91 11 2323 2400',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 28.6388,
+    longitude: 77.2386,
+    departments: ['Trauma Care', 'Neurology', 'ENT', 'Surgery', 'Diagnostics'],
+    doctorsCount: 210,
+    bedsAvailable: 312,
+    ambulanceAvailable: true,
+    rating: 4.5,
+    reviews: [
+      { author: 'Neha S.', text: 'Excellent trauma care team.', rating: 5 },
+      { author: 'Imran A.', text: 'Registration can be slow during peak hours.', rating: 4 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80'
+  },
+  {
+    id: 'gh-mum-003',
+    name: 'King Edward Memorial Government Hospital',
+    address: 'Acharya Donde Marg, Parel',
+    village: 'Parel',
+    city: 'Mumbai',
+    state: 'Maharashtra',
+    country: 'India',
+    contactNumber: '+91 22 2410 7000',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 19.0026,
+    longitude: 72.8426,
+    departments: ['Emergency', 'Oncology', 'Maternity', 'Dermatology', 'Radiology'],
+    doctorsCount: 248,
+    bedsAvailable: 275,
+    ambulanceAvailable: true,
+    rating: 4.6,
+    reviews: [
+      { author: 'Prakash M.', text: 'Strong specialist departments and affordable care.', rating: 5 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80'
+  },
+  {
+    id: 'gh-che-004',
+    name: 'Rajiv Gandhi Government General Hospital',
+    address: 'EVR Periyar Salai, Park Town',
+    village: 'Park Town',
+    city: 'Chennai',
+    state: 'Tamil Nadu',
+    country: 'India',
+    contactNumber: '+91 44 2530 5000',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 13.0822,
+    longitude: 80.2757,
+    departments: ['General Medicine', 'Nephrology', 'Cardiology', 'Pulmonology'],
+    doctorsCount: 190,
+    bedsAvailable: 221,
+    ambulanceAvailable: true,
+    rating: 4.3,
+    reviews: [
+      { author: 'Kavya P.', text: 'Reliable emergency service and helpful nurses.', rating: 4 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80'
+  },
+  {
+    id: 'gh-lon-005',
+    name: 'St Thomas Government NHS Hospital',
+    address: 'Westminster Bridge Road',
+    village: 'Lambeth',
+    city: 'London',
+    state: 'England',
+    country: 'United Kingdom',
+    contactNumber: '+44 20 7188 7188',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 51.4988,
+    longitude: -0.118,
+    departments: ['Emergency', 'Cardiology', 'Respiratory Medicine', 'Women and Children'],
+    doctorsCount: 168,
+    bedsAvailable: 142,
+    ambulanceAvailable: true,
+    rating: 4.7,
+    reviews: [
+      { author: 'Oliver J.', text: 'Organized and reassuring care experience.', rating: 5 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80'
+  },
+  {
+    id: 'gh-nyc-006',
+    name: 'NYC Health + Hospitals Bellevue',
+    address: '462 1st Avenue',
+    village: 'Kips Bay',
+    city: 'New York',
+    state: 'New York',
+    country: 'United States',
+    contactNumber: '+1 212 562 4141',
+    emergencyAvailable: true,
+    openingHours: '24 hours',
+    latitude: 40.7395,
+    longitude: -73.9767,
+    departments: ['Emergency', 'Psychiatry', 'Surgery', 'Pediatrics'],
+    doctorsCount: 176,
+    bedsAvailable: 198,
+    ambulanceAvailable: true,
+    rating: 4.2,
+    reviews: [
+      { author: 'Maria L.', text: 'Large public hospital with strong emergency coverage.', rating: 4 }
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=900&q=80'
+  }
+];
