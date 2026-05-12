@@ -19,7 +19,7 @@ export default function HospitalMap({ hospitals }) {
   const first = hospitals[0] || { latitude: 20.5937, longitude: 78.9629 };
 
   return (
-    <div className="h-[420px] rounded-lg border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+    <div className="glass h-[420px] rounded-lg p-2">
       <MapContainer center={[first.latitude, first.longitude]} zoom={hospitals.length > 1 ? 5 : 11} scrollWheelZoom>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

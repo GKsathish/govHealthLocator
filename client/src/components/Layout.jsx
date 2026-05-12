@@ -15,6 +15,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLanguage, toggleMode } from '../store/preferencesSlice.js';
 import { getLabels } from '../i18n/translations.js';
+import Footer from './Footer.jsx';
 
 const navLinkClass = ({ isActive }) =>
   `px-3 py-2 rounded-md text-sm font-semibold transition ${isActive ? 'bg-white/20 text-white' : 'text-white/85 hover:text-white hover:bg-white/10'}`;
@@ -25,8 +26,8 @@ export default function Layout() {
   const labels = getLabels(language);
 
   return (
-    <Box className="min-h-screen bg-medical-50 text-slate-900 transition dark:bg-[#071922] dark:text-slate-100">
-      <AppBar position="sticky" elevation={0} color="primary" sx={{ backdropFilter: 'blur(16px)' }}>
+    <Box className="app-shell min-h-screen text-slate-900 transition dark:text-slate-100">
+      <AppBar position="sticky" elevation={0} color="primary" sx={{ backdropFilter: 'blur(18px) saturate(150%)' }}>
         <Toolbar className="gap-3">
           <HealthAndSafety />
           <Typography variant="h6" className="flex-1 font-extrabold">
@@ -78,6 +79,7 @@ export default function Layout() {
       <Container maxWidth="xl" sx={{ py: { xs: 3, md: 5 } }}>
         <Outlet />
       </Container>
+      <Footer />
     </Box>
   );
 }

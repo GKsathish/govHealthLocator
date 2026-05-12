@@ -87,7 +87,17 @@ export const translations = {
     location: 'Location',
     contact: 'Contact',
     actions: 'Actions',
-    fieldRequired: 'Please enter'
+    fieldRequired: 'Please enter',
+    footerTagline: 'Helping citizens find verified public healthcare faster.',
+    publicServices: 'Public Services',
+    hospitalDirectory: 'Hospital Directory',
+    emergencySupport: 'Emergency Support',
+    locationSearch: 'Location Search',
+    contactDesk: 'Contact Desk',
+    emergencyDial: 'Emergency Dial',
+    helpline: 'Health Helpline',
+    rights: 'All rights reserved.',
+    serviceStatus: 'Service status: Online'
   },
   hi: {
     brand: 'गवकेयर लोकेटर',
@@ -165,7 +175,17 @@ export const translations = {
     location: 'स्थान',
     contact: 'संपर्क',
     actions: 'कार्रवाई',
-    fieldRequired: 'कृपया दर्ज करें'
+    fieldRequired: 'कृपया दर्ज करें',
+    footerTagline: 'नागरिकों को सत्यापित सरकारी स्वास्थ्य सेवा तेजी से खोजने में मदद करता है।',
+    publicServices: 'जन सेवाएं',
+    hospitalDirectory: 'अस्पताल निर्देशिका',
+    emergencySupport: 'आपातकालीन सहायता',
+    locationSearch: 'स्थान खोज',
+    contactDesk: 'संपर्क डेस्क',
+    emergencyDial: 'आपातकालीन डायल',
+    helpline: 'स्वास्थ्य हेल्पलाइन',
+    rights: 'सर्वाधिकार सुरक्षित।',
+    serviceStatus: 'सेवा स्थिति: ऑनलाइन'
   },
   te: {
     brand: 'గవ్‌కేర్ లోకేటర్',
@@ -243,7 +263,17 @@ export const translations = {
     location: 'స్థానం',
     contact: 'సంప్రదింపు',
     actions: 'చర్యలు',
-    fieldRequired: 'దయచేసి నమోదు చేయండి'
+    fieldRequired: 'దయచేసి నమోదు చేయండి',
+    footerTagline: 'ధృవీకరించిన ప్రజా ఆరోగ్య సేవలను పౌరులు వేగంగా కనుగొనడంలో సహాయం.',
+    publicServices: 'ప్రజా సేవలు',
+    hospitalDirectory: 'ఆసుపత్రుల డైరెక్టరీ',
+    emergencySupport: 'అత్యవసర సహాయం',
+    locationSearch: 'స్థాన శోధన',
+    contactDesk: 'సంప్రదింపు డెస్క్',
+    emergencyDial: 'అత్యవసర డయల్',
+    helpline: 'ఆరోగ్య హెల్ప్‌లైన్',
+    rights: 'అన్ని హక్కులు పరిరక్షించబడ్డాయి.',
+    serviceStatus: 'సేవ స్థితి: ఆన్‌లైన్'
   }
 };
 

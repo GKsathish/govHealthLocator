@@ -24,14 +24,22 @@ export default function HospitalCard({ hospital }) {
   return (
     <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <Card className="h-full overflow-hidden">
-        <CardMedia component="img" height="170" image={hospital.imageUrl} alt={hospital.name} />
+        <div className="image-overlay">
+          <CardMedia component="img" height="190" image={hospital.imageUrl} alt={hospital.name} />
+          <Chip
+            className="!absolute bottom-3 left-3 z-10 !font-extrabold"
+            label={`${hospital.rating} ★`}
+            color="primary"
+            size="small"
+          />
+        </div>
         <CardContent className="space-y-3">
           <div className="flex items-start justify-between gap-3">
             <Typography variant="h6" className="leading-tight">
               {hospital.name}
             </Typography>
             <Tooltip title={isFavorite ? labels.removeFavorite : labels.saveFavorite}>
-              <IconButton color="primary" onClick={() => dispatch(toggleFavorite(hospital.id))}>
+              <IconButton className="!bg-cyan-50 dark:!bg-cyan-950/40" color="primary" onClick={() => dispatch(toggleFavorite(hospital.id))}>
                 {isFavorite ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
             </Tooltip>
@@ -51,7 +59,7 @@ export default function HospitalCard({ hospital }) {
             />
             <Chip icon={<AccessTime />} label={hospital.openingHours} size="small" />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between rounded-lg bg-slate-50 p-2 dark:bg-slate-800/60">
             <Rating value={hospital.rating} precision={0.1} readOnly size="small" />
             <Typography variant="body2">{hospital.bedsAvailable} {labels.beds}</Typography>
           </div>

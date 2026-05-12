@@ -47,7 +47,22 @@ const hospitalsSlice = createSlice({
   initialState,
   reducers: {
     setFilter(state, action) {
-      state.filters[action.payload.key] = action.payload.value;
+      const { key, value } = action.payload;
+      state.filters[key] = value;
+
+      if (key === 'country') {
+        state.filters.state = '';
+        state.filters.city = '';
+        state.filters.village = '';
+      }
+      if (key === 'state') {
+        state.filters.city = '';
+        state.filters.village = '';
+      }
+      if (key === 'city') {
+        state.filters.village = '';
+      }
+
       state.page = 1;
     },
     setFilters(state, action) {

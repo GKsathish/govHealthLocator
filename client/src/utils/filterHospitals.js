@@ -20,5 +20,4 @@ export const filterHospitals = (hospitals, filters) => {
 
 export const getUniqueOptions = (hospitals, key) => [...new Set(hospitals.map((hospital) => hospital[key]).filter(Boolean))].sort();
 
-export const getSuggestions = (hospitals) =>
-  [...new Set(hospitals.flatMap((hospital) => [hospital.name, hospital.village, hospital.city, hospital.state, hospital.country]))].filter(Boolean);
+export const getSuggestions = (hospitals) => [...new Set(hospitals.map((hospital) => hospital.name).filter(Boolean))].sort();

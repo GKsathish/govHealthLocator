@@ -1,4 +1,4 @@
-import { GpsFixed } from '@mui/icons-material';
+import { GpsFixed, LocalHospital, Map, MedicalServices } from '@mui/icons-material';
 import { Alert, Button, Grid, Pagination, Stack, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -61,16 +61,21 @@ export default function HospitalListingPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="glass page-heading flex flex-wrap items-center justify-between gap-4">
         <div>
           <Typography variant="h3">{labels.listingTitle}</Typography>
           <Typography className="text-slate-600 dark:text-slate-300">
             {filtered.length} {labels.matchingHospitals}
           </Typography>
         </div>
-        <Button variant={nearbyOnly ? 'contained' : 'outlined'} startIcon={<GpsFixed />} onClick={findNearby}>
-          {labels.nearbyHospitals}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="metric-pill"><LocalHospital fontSize="small" />{items.length}</span>
+          <span className="metric-pill"><MedicalServices fontSize="small" />24/7</span>
+          <span className="metric-pill"><Map fontSize="small" />Map</span>
+          <Button variant={nearbyOnly ? 'contained' : 'outlined'} startIcon={<GpsFixed />} onClick={findNearby}>
+            {labels.nearbyHospitals}
+          </Button>
+        </div>
       </div>
       <SearchFilters />
       {error && <Alert severity="info">{error}</Alert>}
@@ -92,8 +97,8 @@ export default function HospitalListingPage() {
 
       {!visibleHospitals.length && !loading && <Alert severity="warning">{labels.noMatches}</Alert>}
 
-      <Stack alignItems="center">
-        <Pagination count={pageCount} page={Math.min(page, pageCount)} onChange={(_, value) => dispatch(setPage(value))} color="primary" />
+      <Stack alignItems="center" className="glass rounded-lg py-3">
+        <Pagination count={pageCount} page={Math.min(page, pageCount)} onChange={(_, value) => dispatch(setPage(value))} color="primary" shape="rounded" />
       </Stack>
     </div>
   );

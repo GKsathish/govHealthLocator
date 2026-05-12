@@ -2,10 +2,16 @@ import { Delete, Edit, Save } from '@mui/icons-material';
 import {
   Alert,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   IconButton,
   MenuItem,
+  Pagination,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -43,7 +49,14 @@ export default function AdminDashboard() {
   const labels = getLabels(language);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [tablePage, setTablePage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const isEditing = Boolean(form.id);
+  const pageCount = Math.max(1, Math.ceil(hospitals.length / rowsPerPage));
+  const visibleHospitals = hospitals.slice((tablePage - 1) * rowsPerPage, tablePage * rowsPerPage);
 
   const requiredFields = useMemo(() => ['name', 'address', 'city', 'state', 'country', 'contactNumber'], []);
 
@@ -61,6 +74,8 @@ export default function AdminDashboard() {
       bedsAvailable: String(hospital.bedsAvailable)
     });
     setError('');
+    setSuccess('');
+    setEditOpen(true);
   };
 
   const submitHospital = (event) => {
@@ -91,6 +106,9 @@ export default function AdminDashboard() {
     dispatch(isEditing ? updateHospital(payload) : addHospital(payload));
     setForm(emptyForm);
     setError('');
+    setSuccess(isEditing ? 'Hospital updated successfully.' : 'Hospital added successfully.');
+    setEditOpen(false);
+    setTablePage(1);
   };
 
   const handleImageUpload = (event) => {
@@ -98,68 +116,88 @@ export default function AdminDashboard() {
     if (file) updateField('imageUrl', URL.createObjectURL(file));
   };
 
+  const closeEditModal = () => {
+    setEditOpen(false);
+    setForm(emptyForm);
+    setError('');
+  };
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+    dispatch(deleteHospital(deleteTarget.id));
+    setDeleteTarget(null);
+    setSuccess('Hospital deleted successfully.');
+  };
+
+  const hospitalForm = (
+    <>
+      <Typography variant="h5" className="section-title mb-4">
+        {isEditing ? labels.editHospital : labels.addHospital}
+      </Typography>
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      <Grid container spacing={2}>
+        {[
+          ['name', labels.hospitalName],
+          ['contactNumber', labels.contactNumber],
+          ['address', labels.address],
+          ['village', labels.village],
+          ['city', labels.city],
+          ['state', labels.state],
+          ['openingHours', labels.openingHours],
+          ['latitude', labels.latitude],
+          ['longitude', labels.longitude],
+          ['doctorsCount', labels.doctorsCount],
+          ['bedsAvailable', labels.bedsField],
+          ['imageUrl', labels.imageUrl]
+        ].map(([key, label]) => (
+          <Grid item xs={12} md={key === 'address' || key === 'imageUrl' ? 6 : 3} key={key}>
+            <TextField fullWidth label={label} value={form[key]} onChange={(event) => updateField(key, event.target.value)} />
+          </Grid>
+        ))}
+        <Grid item xs={12} md={3}>
+          <TextField
+            select
+            fullWidth
+            label={labels.country}
+            value={form.country}
+            onChange={(event) => updateField('country', event.target.value)}
+          >
+            <MenuItem value="">{labels.selectCountry}</MenuItem>
+            {countries.map((country) => (
+              <MenuItem value={country} key={country}>
+                {country}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Button component="label" variant="outlined" fullWidth sx={{ height: '56px' }}>
+            {labels.uploadImage}
+            <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Button type="submit" variant="contained" fullWidth sx={{ height: '56px' }} startIcon={<Save />}>
+            {isEditing ? labels.saveChanges : labels.addHospital}
+          </Button>
+        </Grid>
+      </Grid>
+    </>
+  );
+
   return (
     <div className="space-y-6">
-      <div>
+      <div className="glass page-heading">
         <Typography variant="h3">{labels.adminTitle}</Typography>
         <Typography className="text-slate-600 dark:text-slate-300">{labels.adminSubtitle}</Typography>
       </div>
+      {success && <Alert severity="success" onClose={() => setSuccess('')}>{success}</Alert>}
 
-      <Paper component="form" onSubmit={submitHospital} className="p-5">
-        <Typography variant="h5" className="mb-4">
-          {isEditing ? labels.editHospital : labels.addHospital}
-        </Typography>
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        <Grid container spacing={2}>
-          {[
-            ['name', labels.hospitalName],
-            ['contactNumber', labels.contactNumber],
-            ['address', labels.address],
-            ['village', labels.village],
-            ['city', labels.city],
-            ['state', labels.state],
-            ['openingHours', labels.openingHours],
-            ['latitude', labels.latitude],
-            ['longitude', labels.longitude],
-            ['doctorsCount', labels.doctorsCount],
-            ['bedsAvailable', labels.bedsField],
-            ['imageUrl', labels.imageUrl]
-          ].map(([key, label]) => (
-            <Grid item xs={12} md={key === 'address' || key === 'imageUrl' ? 6 : 3} key={key}>
-              <TextField fullWidth label={label} value={form[key]} onChange={(event) => updateField(key, event.target.value)} />
-            </Grid>
-          ))}
-          <Grid item xs={12} md={3}>
-            <TextField
-              select
-              fullWidth
-              label={labels.country}
-              value={form.country}
-              onChange={(event) => updateField('country', event.target.value)}
-            >
-              <MenuItem value="">{labels.selectCountry}</MenuItem>
-              {countries.map((country) => (
-                <MenuItem value={country} key={country}>
-                  {country}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Button component="label" variant="outlined" fullWidth sx={{ height: '56px' }}>
-              {labels.uploadImage}
-              <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Button type="submit" variant="contained" fullWidth sx={{ height: '56px' }} startIcon={<Save />}>
-              {isEditing ? labels.saveChanges : labels.addHospital}
-            </Button>
-          </Grid>
-        </Grid>
+      <Paper component="form" onSubmit={submitHospital} className="glass p-5">
+        {hospitalForm}
       </Paper>
 
-      <Paper className="overflow-x-auto p-2">
+      <Paper className="glass overflow-x-auto p-2">
         <Table>
           <TableHead>
             <TableRow>
@@ -170,7 +208,7 @@ export default function AdminDashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {hospitals.map((hospital) => (
+            {visibleHospitals.map((hospital) => (
               <TableRow key={hospital.id}>
                 <TableCell>{hospital.name}</TableCell>
                 <TableCell>{hospital.city}, {hospital.state}, {hospital.country}</TableCell>
@@ -179,7 +217,7 @@ export default function AdminDashboard() {
                   <IconButton color="primary" onClick={() => editHospital(hospital)}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => dispatch(deleteHospital(hospital.id))}>
+                  <IconButton color="error" onClick={() => setDeleteTarget(hospital)}>
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -187,7 +225,54 @@ export default function AdminDashboard() {
             ))}
           </TableBody>
         </Table>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between" sx={{ p: 2 }}>
+          <TextField
+            select
+            size="small"
+            label="Rows"
+            value={rowsPerPage}
+            onChange={(event) => {
+              setRowsPerPage(Number(event.target.value));
+              setTablePage(1);
+            }}
+            sx={{ width: 120 }}
+          >
+            {[5, 10, 15, 20].map((size) => (
+              <MenuItem value={size} key={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </TextField>
+          <Pagination
+            count={pageCount}
+            page={Math.min(tablePage, pageCount)}
+            onChange={(_, value) => setTablePage(value)}
+            color="primary"
+            shape="rounded"
+          />
+        </Stack>
       </Paper>
+
+      <Dialog open={editOpen} onClose={closeEditModal} maxWidth="lg" fullWidth>
+        <DialogContent>
+          <form onSubmit={submitHospital}>{hospitalForm}</form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
+        <DialogTitle>Confirm delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Delete {deleteTarget?.name}? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="grid items-center gap-8 overflow-hidden rounded-lg bg-gradient-to-br from-cyan-50 via-white to-emerald-50 p-5 shadow-glass dark:from-slate-900 dark:via-slate-800 dark:to-teal-950 md:grid-cols-[1.05fr_0.95fr] md:p-10">
+      <section className="hero-panel grid items-center gap-8 overflow-hidden rounded-lg p-5 md:grid-cols-[1.05fr_0.95fr] md:p-10">
         <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
           <Typography variant="overline" color="primary" className="font-bold">
             {labels.heroOverline}
@@ -39,7 +39,7 @@ export default function HomePage() {
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="min-h-[320px]">
           <img
-            className="h-full max-h-[460px] w-full rounded-lg object-cover"
+            className="hero-image h-full max-h-[460px] w-full rounded-lg object-cover"
             src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1100&q=80"
             alt="Healthcare professionals in a modern hospital"
           />
@@ -53,7 +53,7 @@ export default function HomePage() {
           const Icon = card.icon;
           return (
             <Grid item xs={12} md={4} key={card.title}>
-              <Paper className="glass h-full rounded-lg p-5">
+              <Paper className="glass surface-card h-full rounded-lg p-5">
                 <Icon color="primary" fontSize="large" />
                 <Typography variant="h6" className="mt-3">
                   {card.title}
@@ -70,7 +70,7 @@ export default function HomePage() {
         })}
       </Grid>
 
-      <section className="rounded-lg bg-white p-5 shadow-sm dark:bg-slate-900">
+      <section className="glass rounded-lg p-5">
         <div className="flex flex-wrap items-center gap-4">
           <LocalHospital color="primary" fontSize="large" />
           <div>

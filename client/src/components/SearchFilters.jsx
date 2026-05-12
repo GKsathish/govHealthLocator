@@ -1,21 +1,47 @@
 import { Autocomplete, Button, Grid, MenuItem, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFilters, setFilter } from '../store/hospitalsSlice.js';
-import { getSuggestions, getUniqueOptions } from '../utils/filterHospitals.js';
+import { filterHospitals, getSuggestions, getUniqueOptions } from '../utils/filterHospitals.js';
 import { getLabels } from '../i18n/translations.js';
 
 const filterFields = [
-  { key: 'village', labelKey: 'village' },
-  { key: 'city', labelKey: 'city' },
+  { key: 'country', labelKey: 'country' },
   { key: 'state', labelKey: 'state' },
-  { key: 'country', labelKey: 'country' }
+  { key: 'city', labelKey: 'city' },
+  { key: 'village', labelKey: 'village' }
 ];
+
+const parentFiltersFor = (key, filters) => {
+  if (key === 'country') return {};
+  if (key === 'state') return { country: filters.country };
+  if (key === 'city') return { country: filters.country, state: filters.state };
+  if (key === 'village') return { country: filters.country, state: filters.state, city: filters.city };
+  return {};
+};
 
 export default function SearchFilters({ compact = false }) {
   const dispatch = useDispatch();
   const { countries, items, filters } = useSelector((state) => state.hospitals);
   const { language } = useSelector((state) => state.preferences);
   const labels = getLabels(language);
+
+  const getOptions = (field) => {
+    if (field.key === 'country') {
+      const countriesWithHospitals = getUniqueOptions(items, 'country');
+      return countriesWithHospitals.length ? countriesWithHospitals : countries;
+    }
+
+    const parentScopedHospitals = filterHospitals(items, {
+      search: '',
+      village: '',
+      city: '',
+      state: '',
+      country: '',
+      ...parentFiltersFor(field.key, filters)
+    });
+
+    return getUniqueOptions(parentScopedHospitals, field.key);
+  };
 
   return (
     <div className="glass rounded-lg p-4">
@@ -39,7 +65,7 @@ export default function SearchFilters({ compact = false }) {
               onChange={(event) => dispatch(setFilter({ key: field.key, value: event.target.value }))}
             >
               <MenuItem value="">{labels.all} {labels[field.labelKey]}</MenuItem>
-              {(field.key === 'country' ? countries : getUniqueOptions(items, field.key)).map((option) => (
+              {getOptions(field).map((option) => (
                 <MenuItem value={option} key={option}>
                   {option}
                 </MenuItem>

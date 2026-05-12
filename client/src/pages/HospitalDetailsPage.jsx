@@ -27,8 +27,8 @@ export default function HospitalDetailsPage() {
       <Button component={Link} to="/hospitals" startIcon={<ArrowBack />}>
         {labels.backToHospitals}
       </Button>
-      <section className="grid gap-6 rounded-lg bg-white p-5 shadow-sm dark:bg-slate-900 md:grid-cols-[0.9fr_1.1fr]">
-        <img className="h-full min-h-[320px] w-full rounded-lg object-cover" src={hospital.imageUrl} alt={hospital.name} />
+      <section className="glass grid gap-6 rounded-lg p-5 md:grid-cols-[0.9fr_1.1fr]">
+        <img className="hero-image h-full min-h-[320px] w-full rounded-lg object-cover" src={hospital.imageUrl} alt={hospital.name} />
         <div className="space-y-4">
           <Typography variant="h3">{hospital.name}</Typography>
           <Typography className="text-slate-600 dark:text-slate-300">
@@ -62,8 +62,8 @@ export default function HospitalDetailsPage() {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={5}>
-          <Paper className="h-full p-5">
-            <Typography variant="h5">{labels.departments}</Typography>
+          <Paper className="glass h-full p-5">
+            <Typography variant="h5" className="section-title">{labels.departments}</Typography>
             <div className="mt-4 flex flex-wrap gap-2">
               {hospital.departments.map((department) => (
                 <Chip key={department} label={department} />
@@ -76,11 +76,11 @@ export default function HospitalDetailsPage() {
         </Grid>
       </Grid>
 
-      <Paper className="p-5">
-        <Typography variant="h5">{labels.reviews}</Typography>
+      <Paper className="glass p-5">
+        <Typography variant="h5" className="section-title">{labels.reviews}</Typography>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {hospital.reviews.map((review) => (
-            <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-700" key={`${review.author}-${review.text}`}>
+            <div className="surface-card rounded-lg border border-cyan-100 bg-white/70 p-4 dark:border-cyan-900/50 dark:bg-slate-900/50" key={`${review.author}-${review.text}`}>
               <div className="flex items-center gap-3">
                 <Avatar>{review.author.slice(0, 1)}</Avatar>
                 <div>
